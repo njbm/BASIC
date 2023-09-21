@@ -1,6 +1,4 @@
 Route::group(['prefix' => 'dashboard'], function () 
 	{
-   
 		Route::resource('plans', PlanController::class);
-
 	});
