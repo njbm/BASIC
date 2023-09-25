@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Document</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<style>
+   .container{padding-top:50px ;}
+   
+</style>
+</head>
+<body>
+   <div class="container" id="app">
+      <div class="row">
+         <h1 class="text-center text-success">Bazar List</h1>
+         <table class="table text-center" >
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in items">
+                <td>{{ item.name }}</td>
+                <td> {{item.price}}</td>
+              </tr>
+             
+            </tbody>
+          </table>
+      </div>
+   </div>
+
+   <script>
+      new Vue({
+         el:'#app',
+         data:{
+            items:[
+               {name:'Apple', price:'200$'},
+               {name:'Banana', price:'500$'},
+               {name:'WateMelon', price:'400$'},
+               {name:'Date', price:'1200$'}
+            ]
+         }
+
+      });
+   </script>
+   
+</body>
+</html>
