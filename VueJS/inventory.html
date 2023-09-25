@@ -8,41 +8,69 @@
    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <style>
    .container{padding-top:50px ;}
+   .table{padding-top: 10px;}
    
 </style>
 </head>
 <body>
-   <div class="container" id="app">
-      <div class="row">
-         <h1 class="text-center text-success">Bazar List</h1>
-         <table class="table text-center" >
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-              </tr>
-            </thead>
+
+<div class="container" id="app" style="max-width:500px; margin:0 auto;">
+   <div class="card mt-4">
+         <div class="card-header">
+            <h3>Vue Apps</h3>
+         </div>
+      <div class="card-body">
+         <form @submit.prevent="addItem">
+            <div >
+               <input class="form-control" type="text" v-model="newItem.name" placeholder="Enter Name"><br>
+               <input class="form-control" type="text" v-model="newItem.price" placeholder="Enter Price">
+               <button submit hidden >Add Item</button>
+            </div>     
+         </form>
+
+         <table style="margin-top: 10px;" class="table text-center" >
+            <thead> <tr> <th scope="col">Name</th> <th scope="col">Price</th> </tr> </thead>
+            
             <tbody>
-              <tr v-for="item in items">
-                <td>{{ item.name }}</td>
-                <td> {{item.price}}</td>
-              </tr>
-             
+            <tr v-for="item in items">
+               <td>{{ item.name }}</td>      
+               <td> <input class="form-control" type="text" v-model="item.price"></td> <!-- <td> {{item.price}}</td> -->
+            </tr>
             </tbody>
-          </table>
+            <tfoot><tr> <td>Total</td>   <td>{{total}}</td> </tr></tfoot>
+         </table>
       </div>
-   </div>
+   </div>   
+</div>
+
 
    <script>
       new Vue({
          el:'#app',
          data:{
             items:[
-               {name:'Apple', price:'200$'},
-               {name:'Banana', price:'500$'},
-               {name:'WateMelon', price:'400$'},
-               {name:'Date', price:'1200$'}
-            ]
+               {name:'Apple', price:'200'},
+               {name:'WateMelon', price:'400'},
+               {name:'Date', price:'1200'}
+            ],
+            newItem: {name:'', price:0}
+         },
+         methods:{
+            addItem(){
+               this.items.push({
+                  name: this.newItem.name,
+                  price: this.newItem.price + '$'
+               })
+            }
+         },
+         computed:{
+            total(){
+               var total=0;
+               this.items.forEach(item => {
+                  total += parseFloat(item.price)
+               });
+               return total+ '$';
+            }
          }
 
       });
