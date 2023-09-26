@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+   <div id="app">
+      <ul>
+         <li v-for="item in items">{{ item.name }}- {{item.price}}</li>
+      </ul>
+   </div>
+
+   <script>
+      new Vue({
+         el:'#app',
+         data:{
+            items:[
+               {name:'Apple', price:'200$'},
+               {name:'Banana', price:'500$'},
+               {name:'WateMelon', price:'400$'},
+               {name:'Date', price:'1200$'}
+            ]
+         }
+
+      });
+   </script>
+   
+
+   
+</body>
+</html>
