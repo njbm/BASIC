@@ -43,7 +43,7 @@ echo "✅ Language keys extracted and saved to config/test.php (always in double
 
 
 
-
+// only component
 function extractLabels()
 {
     $directory = resource_path('views');
@@ -67,3 +67,77 @@ function extractLabels()
     // Return the labels as a JSON response or as an array
     return response()->json($langKeys);
 }
+
+
+
+// all
+function extractAll()
+{
+    $directory = resource_path('views');
+    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+    $langKeys = [];
+    
+    $patternLang = "/(?:@lang|trans|__)\((['\"])(.*?)\\1\)/";
+    $patternComponent = '/<x-[^>]+(label|title|message)="([^"]+)"/';
+    foreach ($files as $file) {
+        if ($file->isFile() && $file->getExtension() === 'php') {
+            $content = file_get_contents($file->getRealPath());
+            preg_match_all($patternLang, $content, $matchesLang);
+            if (!empty($matchesLang[2])) {
+                $langKeys = array_merge($langKeys, $matchesLang[2]);
+            }
+            preg_match_all($patternComponent, $content, $matchesComponent);
+            if (!empty($matchesComponent[2])) {
+                $langKeys = array_merge($langKeys, $matchesComponent[2]);
+            }
+        }
+    }
+
+    $langKeys = array_unique($langKeys);
+    sort($langKeys);
+
+    // Return the labels as a JSON response or as an array
+    return response()->json($langKeys);
+}
+
+
+
+
+// for web.php
+
+
+Route::get('test', [FrontendController::class,'test']);
+
+function test()
+    {
+        $directory = resource_path('views');
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+        $langKeys = [];
+
+        $patternLang = "/(?:@lang|trans|__)\((['\"])(.*?)\\1\)/";
+        $patternComponent = '/<x-[^>]+(label|title|message)="([^"]+)"/';
+        foreach ($files as $file) {
+            if ($file->isFile() && $file->getExtension() === 'php') {
+                $content = file_get_contents($file->getRealPath());
+                preg_match_all($patternLang, $content, $matchesLang);
+                if (!empty($matchesLang[2])) {
+                    $langKeys = array_merge($langKeys, $matchesLang[2]);
+                }
+                preg_match_all($patternComponent, $content, $matchesComponent);
+                if (!empty($matchesComponent[2])) {
+                    $langKeys = array_merge($langKeys, $matchesComponent[2]);
+                }
+            }
+        }
+
+        $langKeys = array_unique($langKeys);
+        sort($langKeys);
+
+        $configPath = base_path('config/test.php');
+        $formatted = "<?php\n\nreturn [\n    \"" . implode("\",\n    \"", $langKeys) . "\",\n];\n";
+
+        file_put_contents($configPath, $formatted);
+
+        echo "✅ Language keys extracted and saved to config/test.php (always in double quotes)\n";
+
+    }
