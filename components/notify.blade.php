@@ -26,3 +26,12 @@
 @endif
 
 @stack('notify')
+
+@if ($errors->any())
+<script>
+    "use strict";
+    @foreach ($errors->unique() as $error)
+    Notiflix.Notify.failure("{{ trans($error) }}");
+    @endforeach
+</script>
+@endif
