@@ -5,27 +5,28 @@ $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory
 $langKeys = [];
 
 // Match @lang('word'), @lang("word"), __('word'), trans('word')
-$patternLang = "/(?:@lang|trans|__)\((['\"])(.*?)\\1\)/";
+//$patternLang = "/(?:@lang|trans|__)\((['\"])(.*?)\\1\)/";
+$patternLang = "/(?:@lang|trans|__)\(\s*(['\"])(.*?)\\1/";
 
-// Pattern for x-component label attribute (e.g., <x-offcanvas.filter-field label="Currency" />)
-$patternLabel = '/<x-[^>]+label="([^"]+)"/';
+// Pattern for x-component attributes
+$patternComponent = '/<x-[^>]+(label|title|message|menu|submenu)="([^"]+)"/';
 
 foreach ($files as $file) {
-   if ($file->isFile() && $file->getExtension() === 'php') {
-       $content = file_get_contents($file->getRealPath());
+    if ($file->isFile() && $file->getExtension() === 'php') {
+        $content = file_get_contents($file->getRealPath());
 
-       // Match @lang, trans, __() functions
-       preg_match_all($patternLang, $content, $matchesLang);
-       if (!empty($matchesLang[2])) {
-           $langKeys = array_merge($langKeys, $matchesLang[2]);
-       }
+        // Match @lang, trans, __() functions
+        preg_match_all($patternLang, $content, $matchesLang);
+        if (!empty($matchesLang[2])) {
+            $langKeys = array_merge($langKeys, $matchesLang[2]);
+        }
 
-       // Match x-component label attributes
-       preg_match_all($patternLabel, $content, $matchesLabel);
-       if (!empty($matchesLabel[1])) {
-           $langKeys = array_merge($langKeys, $matchesLabel[1]);
-       }
-   }
+        // Match x-component attributes
+        preg_match_all($patternComponent, $content, $matchesLabel);
+        if (!empty($matchesLabel[1])) {
+            $langKeys = array_merge($langKeys, $matchesLabel[1]);
+        }
+    }
 }
 
 // Remove duplicates & sort
@@ -111,11 +112,11 @@ Route::get('test', [FrontendController::class,'test']);
 function test()
     {
         $directory = resource_path('views');
-        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+        $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
         $langKeys = [];
 
         $patternLang = "/(?:@lang|trans|__)\((['\"])(.*?)\\1\)/";
-        $patternComponent = '/<x-[^>]+(label|title|message)="([^"]+)"/';
+        $patternComponent = '/<x-[^>]+(label|title|message|menu|submenu)="([^"]+)"/';
         foreach ($files as $file) {
             if ($file->isFile() && $file->getExtension() === 'php') {
                 $content = file_get_contents($file->getRealPath());

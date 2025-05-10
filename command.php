@@ -21,5 +21,9 @@ curl https://gist.githubusercontent.com/njbm/97b67d2de1f07a460a31c7e208cfacf4/ra
 
 
 
+***LaravelSessionClear***
+
+curl https://gist.githubusercontent.com/njbm/804ac33276bf6d9943375315347ce2e6/raw/9ecfe460d4b99179dcc82674a69b6acabc725701/SessionClear.php | php
+
 
 
