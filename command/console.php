@@ -2,6 +2,60 @@
 
 
 
+
+
+// Theme replace 
+
+Artisan::command('theme:replace', function () {
+    $old = 'light';
+    $new = 'spark';
+
+    // 1. Rename assets/themes/light ➜ assets/themes/spark
+    $themeAssetsOld = base_path("assets/themes/{$old}");
+    $themeAssetsNew = base_path("assets/themes/{$new}");
+    if (File::isDirectory($themeAssetsOld)) {
+        File::moveDirectory($themeAssetsOld, $themeAssetsNew);
+        $this->info("Renamed folder: assets/themes/{$old} ➜ {$new}");
+    } else {
+        $this->warn("Directory not found: assets/themes/{$old}");
+    }
+
+    // 2. Rename assets/preview/light ➜ assets/preview/spark
+    $previewOld = base_path("assets/preview/{$old}");
+    $previewNew = base_path("assets/preview/{$new}");
+    if (File::isDirectory($previewOld)) {
+        File::moveDirectory($previewOld, $previewNew);
+        $this->info("Renamed folder: assets/preview/{$old} ➜ {$new}");
+    } else {
+        $this->warn("Directory not found: assets/preview/{$old}");
+    }
+
+    // 3. Rename resource/views/themes/light ➜ resource/views/themes/spark
+    $themeOld = resource_path("views/themes/{$old}");
+    $themeNew = resource_path("views/themes/{$new}");
+    if (File::isDirectory($themeOld)) {
+        File::moveDirectory($themeOld, $themeNew);
+        $this->info("Renamed folder: resource/views/themes/{$old} ➜ {$new}");
+    } else {
+        $this->warn("Directory not found: resource/views/themes/{$old}");
+    }
+
+    // Update `basic_controls` table (optional)
+    DB::table('basic_controls')->where('theme', $old)->update(['theme' => $new]);
+    // Update `pages` table
+    DB::table('pages')->where('template_name', $old)->update(['template_name' => $new]);
+    // Update `contents` table
+    DB::table('contents')->where('theme', $old)->update(['theme' => $new]);
+
+
+    $this->info("✅ Theme renaming completed.");
+});
+
+
+
+
+
+
 // change required forlder 
 
 Artisan::command('theme:rename-folders', function () {
@@ -41,15 +95,6 @@ Artisan::command('theme:rename-folders', function () {
 
     $this->info("✅ Theme renaming completed.");
 });
-
-
-
-
-
-
-
-
-
 
 
 
