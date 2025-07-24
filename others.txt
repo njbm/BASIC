@@ -1,0 +1,28 @@
+
+
+
+//sidebar-admin
+@lang(stringToTitle(str_replace(basicControl()->theme,'', $name)))
+
+
+//download database
+public function downloadDatabase()
+{
+   $fileName = 'backup-' . date('Y-m-d_H-i-s') . '.sql';
+   $filePath = storage_path("app/{$fileName}");~
+
+   $dbHost = config('database.connections.mysql.host');
+   $dbUser = config('database.connections.mysql.username');
+   $dbPass = config('database.connections.mysql.password');
+   $dbName = config('database.connections.mysql.database');
+
+   $command = "mysqldump -h {$dbHost} -u {$dbUser} -p\"{$dbPass}\" {$dbName} > \"{$filePath}\"";
+
+   exec($command, $output, $result);
+
+   if ($result !== 0 || !file_exists($filePath)) {
+      return response()->json(['error' => '❌ Database export failed.'], 500);
+   }
+
+   return response()->download($filePath)->deleteFileAfterSend(true);
+}

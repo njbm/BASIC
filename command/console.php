@@ -47,6 +47,30 @@ Artisan::command('theme:replace', function () {
     // Update `contents` table
     DB::table('contents')->where('theme', $old)->update(['theme' => $new]);
 
+    // Update `manage_menus` table
+    DB::table('manage_menus')->where('theme', $old)->update(['theme' => $new]);
+
+
+    //for extra theme add
+    $date = now();
+    $bulkInsert = [
+        [
+            'theme' => 'orbit',
+            'menu_section' => 'header',
+            'menu_items' => json_encode([]),
+            'created_at' => $date,
+            'updated_at' => $date,
+        ],
+        [
+            'theme' => 'orbit',
+            'menu_section' => 'footer',
+            'menu_items' => json_encode([]),
+            'created_at' => $date,
+            'updated_at' => $date,
+        ]
+    ];
+    DB::table('manage_menus')->insert($bulkInsert);
+
 
     $this->info("✅ Theme renaming completed.");
 });
