@@ -1,9 +1,6 @@
 <?php
 
 
-
-
-
 // Theme replace 
 
 Artisan::command('theme:replace', function () {
