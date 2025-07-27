@@ -31,6 +31,37 @@ function translateWords(?array $languages = null, ?string $filePath = null)
         die("❌ Invalid file format. It should return an array.\n");
     }
 
+
+
+    // 🔁 Step 1: Move words into en.json
+    $enLangPath = __DIR__ . '/resources/lang/en.json';
+    $langDir = dirname($enLangPath);
+
+    // Make sure lang dir exists
+    if (!is_dir($langDir)) {
+        mkdir($langDir, 0777, true);
+    }
+
+    // Convert words to ["Hello" => "Hello"] format
+    $normalized = [];
+    foreach ($words as $word) {
+        $normalized[$word] = $word;
+    }
+
+    // Load existing en.json if available
+    $existing = [];
+    if (file_exists($enLangPath)) {
+        $existing = json_decode(file_get_contents($enLangPath), true) ?? [];
+    }
+
+    // Merge: keep existing values
+    $merged = $existing + $normalized;
+    // Save updated en.json
+    file_put_contents($enLangPath, json_encode($merged, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    echo "📁 Base language file updated: resources/lang/en.json\n";
+
+
+
     $totalWords = count($words); // Get the total number of words to be translated
 
     foreach ($languages as $langCode => $langName) {
