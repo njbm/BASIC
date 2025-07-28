@@ -130,5 +130,3 @@ class PageSeoSeeder extends Seeder
 
 }
 
-
-//open_ai_api_key = "sk-vnugZJN7DLxQoifJX6OAtqZ-7ZW3B0AtteP6q7eWrzT3BlbkFJtOEAhGtVXhxxWCnyWBcdGcn5ger0wkKVr2oNe5cKsA";
