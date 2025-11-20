@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toastify-JS CDN Example</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+
+    <style>
+        body { margin: 20px; font-family: sans-serif; }
+        button { padding: 10px 15px; font-size: 16px; margin-right: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Toastify-JS (Simple CDN)</h1>
+    <button onclick="showSuccessToast()">Show Success</button>
+    <button onclick="showErrorToast()">Show Error</button>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <script>
+        toastr.success('Operation completed!');
+
+// Error
+toastr.error('Something failed');
+
+// Warning
+toastr.warning('Be careful!');
+
+// Info
+toastr.info('Did you know?');
+    </script>
+</body>
+</html>

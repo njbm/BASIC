@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Toast Notifications</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    #app {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      margin-bottom: 2rem;
+    }
+
+    .card h2 {
+      color: #333;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 0.5rem;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .toast-btn {
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      color: white;
+    }
+
+    .toast-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    .toast-btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    }
+
+    .btn-error {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    }
+
+    .btn-default {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .btn-custom {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .feature-item::before {
+      content: "✓";
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      margin-right: 0.75rem;
+      font-weight: bold;
+    }
+
+    .demo-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .code-block {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="header">
+      <h1>🎉 Vue Toast Notifications</h1>
+      <p>Beautiful, customizable toast notifications for Vue 3</p>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Basic Toast Types</h2>
+      <div class="button-grid">
+        <button class="toast-btn btn-success" @click="showSuccess">
+          Success Toast
+        </button>
+        <button class="toast-btn btn-error" @click="showError">
+          Error Toast
+        </button>
+        <button class="toast-btn btn-warning" @click="showWarning">
+          Warning Toast
+        </button>
+        <button class="toast-btn btn-info" @click="showInfo">
+          Info Toast
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>⚙️ Advanced Features</h2>
+      <div class="button-grid">
+        <button class="toast-btn btn-custom" @click="showProgress">
+          With Progress Bar
+        </button>
+        <button class="toast-btn btn-custom" @click="showWithImage">
+          With Image
+        </button>
+        <button class="toast-btn btn-custom" @click="showWithButtons">
+          With Action Buttons
+        </button>
+        <button class="toast-btn btn-custom" @click="showPersistent">
+          Persistent Toast
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🎨 Custom Toast Builder</h2>
+      <div class="input-group">
+        <label>Message:</label>
+        <input v-model="customMessage" type="text" placeholder="Enter your message">
+      </div>
+      <div class="input-group">
+        <label>Position:</label>
+        <select v-model="customPosition">
+          <option value="topRight">Top Right</option>
+          <option value="topLeft">Top Left</option>
+          <option value="topCenter">Top Center</option>
+          <option value="bottomRight">Bottom Right</option>
+          <option value="bottomLeft">Bottom Left</option>
+          <option value="bottomCenter">Bottom Center</option>
+        </select>
+      </div>
+      <button class="toast-btn btn-default" @click="showCustom" style="width: 100%;">
+        Show Custom Toast
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>✨ Features</h2>
+      <div class="feature-list">
+        <div class="feature-item">Swipe to dismiss</div>
+        <div class="feature-item">Auto dismiss timer</div>
+        <div class="feature-item">Progress bar</div>
+        <div class="feature-item">Custom positions</div>
+        <div class="feature-item">Action buttons</div>
+        <div class="feature-item">Pause on hover</div>
+        <div class="feature-item">RTL support</div>
+        <div class="feature-item">Responsive design</div>
+      </div>
+
+      <div class="demo-section">
+        <h3>Quick Setup:</h3>
+        <div class="code-block">
+&lt;!-- Include CSS --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css"&gt;
+
+&lt;!-- Include JS --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Use it --&gt;
+&lt;script&gt;
+  iziToast.success({
+    title: 'Success',
+    message: 'Your operation was successful!'
+  });
+&lt;/script&gt;
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+  
+  <script>
+    const { createApp } = Vue;
+    
+    createApp({
+      data() {
+        return {
+          customMessage: 'Hello from custom toast!',
+          customPosition: 'topRight'
+        }
+      },
+      methods: {
+        showSuccess() {
+          iziToast.success({
+            title: 'Success!',
+            message: 'Your operation completed successfully',
+            position: 'topRight',
+            timeout: 3000,
+            progressBar: true,
+            transitionIn: 'bounceInDown',
+            transitionOut: 'fadeOutUp'
+          });
+        },
+        
+        showError() {
+          iziToast.error({
+            title: 'Error!',
+            message: 'Something went wrong. Please try again.',
+            position: 'topRight',
+            timeout: 4000,
+            progressBar: true,
+            transitionIn: 'bounceInDown'
+          });
+        },
+        
+        showWarning() {
+          iziToast.warning({
+            title: 'Warning!',
+            message: 'Please check your input before proceeding',
+            position: 'topCenter',
+            timeout: 3500,
+            progressBar: true
+          });
+        },
+        
+        showInfo() {
+          iziToast.info({
+            title: 'Info',
+            message: 'Did you know? You can customize everything!',
+            position: 'bottomRight',
+            timeout: 3000,
+            progressBar: true
+          });
+        },
+        
+        showProgress() {
+          iziToast.show({
+            theme: 'dark',
+            icon: 'icon-person',
+            title: 'Uploading',
+            message: 'Your file is being uploaded...',
+            position: 'topRight',
+            progressBarColor: '#00ff00',
+            timeout: 5000,
+            progressBar: true,
+            pauseOnHover: true
+          });
+        },
+        
+        showWithImage() {
+          iziToast.show({
+            theme: 'light',
+            icon: 'https://izitoast.marcelodolza.com/img/avatar.jpg',
+            title: 'New Message',
+            message: 'You have a new notification from John Doe',
+            position: 'bottomLeft',
+            timeout: 4000,
+            progressBar: false,
+            image: 'https://izitoast.marcelodolza.com/img/avatar.jpg',
+            imageWidth: 70
+          });
+        },
+        
+        showWithButtons() {
+          iziToast.question({
+            timeout: false,
+            close: false,
+            overlay: true,
+            displayMode: 'once',
+            id: 'question',
+            zindex: 999,
+            title: 'Confirm Action',
+            message: 'Are you sure you want to delete this item?',
+            position: 'center',
+            buttons: [
+              ['<button><b>YES</b></button>', function (instance, toast) {
+                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                iziToast.success({
+                  title: 'Deleted',
+                  message: 'Item has been deleted successfully'
+                });
+              }, true],
+              ['<button>NO</button>', function (instance, toast) {
+                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+              }]
+            ]
+          });
+        },
+        
+        showPersistent() {
+          iziToast.show({
+            theme: 'dark',
+            icon: 'icon-bell',
+            title: 'Persistent',
+            message: 'This toast will stay until you close it',
+            position: 'topLeft',
+            timeout: false,
+            close: true,
+            progressBar: false,
+            drag: true
+          });
+        },
+        
+        showCustom() {
+          if (!this.customMessage.trim()) {
+            iziToast.warning({
+              title: 'Warning',
+              message: 'Please enter a message first!'
+            });
+            return;
+          }
+          
+          iziToast.show({
+            title: 'Custom Toast',
+            message: this.customMessage,
+            position: this.customPosition,
+            timeout: 3000,
+            progressBar: true,
+            color: 'purple',
+            icon: 'icon-check',
+            transitionIn: 'bounceInDown',
+            transitionOut: 'fadeOutUp'
+          });
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

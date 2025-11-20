@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notiflix Init-Only Custom Design</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.6/dist/notiflix-3.2.6.min.css">
+
+    <style>
+        body { margin: 20px; font-family: sans-serif; }
+        button { padding: 10px 15px; font-size: 16px; margin-right: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Notiflix Init-Only Custom Toasts (Polite Design)</h1>
+    <button onclick="showModernSuccess()">Show Polite Success</button>
+    <button onclick="showModernError()">Show Clean Error</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.6/dist/notiflix-3.2.6.min.js"></script>
+
+    <script>
+        // --- Initialize Notiflix with modern styling and position using ONLY JS options ---
+        Notiflix.Notify.init({
+            // Global Options
+            position: 'center-top', // Your requested position
+            timeout: 4000,
+            
+            // 1. Add generous border-radius (polite/gorgeous look)
+            borderRadius: '12px', 
+            distance: '15px', // More distance from the top for better visual space
+            
+            // Success Customizations (Clean Green on Light Background)
+            success: {
+                background: '#F0FFF4',     // Very light mint/white background
+                textColor: '#16a085',      // Sleek, monochromatic success green for text
+                notiflixIconColor: '#16a085', // Match icon color to text color
+                backOverlayColor: 'rgba(0,0,0,0.05)', // Subtle overlay
+                // Note: The lack of box-shadow is the primary limitation of avoiding CSS.
+            },
+            
+            // Failure Customizations (Clean Red on Light Background)
+            failure: {
+                background: '#FEF2F2',     // Very light red/white background
+                textColor: '#c0392b',      // Sleek, monochromatic error red for text
+                notiflixIconColor: '#c0392b', // Match icon color to text color
+            },
+            
+            // Info Customizations (Example of a neutral/polite Info toast)
+            info: {
+                background: '#F7F7F7',      // Light gray background
+                textColor: '#34495e',       // Dark neutral color
+                notiflixIconColor: '#34495e',
+            }
+        });
+
+        // --- Functions to display the custom toasts ---
+        function showModernSuccess() {
+            Notiflix.Notify.success('Success! Your settings were updated.', {
+                // You can override options per toast call if needed
+                timeout: 3000 
+            });
+        }
+
+        function showModernError() {
+            Notiflix.Notify.failure('Connection failed. Retrying in 5 seconds.');
+        }
+
+        // Example of the Info style for comparison
+        Notiflix.Notify.info('Welcome back! We have new features for you.', {
+            timeout: 5000,
+            position: 'center-bottom' // You can override position here
+        });
+    </script>
+</body>
+</html>

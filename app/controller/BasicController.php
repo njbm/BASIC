@@ -1,3 +1,37 @@
+<?php
+
+
+// Upload Image
+if ($request->hasFile('image')) {
+    $image = $this->fileUpload(
+        $request->image,
+        config('filelocation.default.path'),
+        null,
+        null,
+        'webp',
+        80,
+        $brand->image,
+        $brand->image_driver
+    );
+    if (empty($image['path'])) {
+        throw new \Exception($uploadErrorMessage);
+    }
+    $data['image'] = $image['path'] ?? null;
+    $data['image_driver'] = $image['driver'] ?? null;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -13,7 +47,7 @@ Route::get('/trans', function () {
             $tr->setTarget('es');
 
             $arrDetails = [];
-            foreach ((array)$item->description as $key => $value) {
+            foreach ((array) $item->description as $key => $value) {
                 $arrDetails[$key] = $tr->translate($value);
             }
 
